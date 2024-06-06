@@ -1,13 +1,13 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Orchid\Screens;
 
 use Orchid\Screen\Screen;
 use Orchid\Support\Facades\Layout;
+use App\Models\Supply;
+use Orchid\Screen\Actions\Link;
 
-class PlatformScreen extends Screen
+class SuppliesScreen extends Screen
 {
     /**
      * Fetch data to be displayed on the screen.
@@ -16,23 +16,19 @@ class PlatformScreen extends Screen
      */
     public function query(): iterable
     {
-        return [];
+        return [
+            'supplies' => Supply::paginate()
+        ];
     }
 
     /**
      * The name of the screen displayed in the header.
+     *
+     * @return string|null
      */
     public function name(): ?string
     {
-        return 'Get Started';
-    }
-
-    /**
-     * Display header description.
-     */
-    public function description(): ?string
-    {
-        return 'Welcome to your Orchid application.';
+        return 'Товары';
     }
 
     /**
@@ -42,19 +38,24 @@ class PlatformScreen extends Screen
      */
     public function commandBar(): array
     {
-        return [];
+        return [
+            Link::make('Создать товар')
+                ->icon('bs.plus')
+                ->route('platform.supply'),
+        ];
     }
 
     /**
      * The screen's layout elements.
      *
-     * @return \Orchid\Screen\Layout[]
+     * @return \Orchid\Screen\Layout[]|string[]
      */
     public function layout(): iterable
     {
         return [
-            Layout::view('platform::partials.update-assets'),
-            Layout::view('platform::partials.welcome'),
+            Layout::table('supplies', [
+
+            ]),
         ];
     }
 }
